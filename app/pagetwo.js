@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
   },
   title: {
-    fontSize: 80,
+    fontSize: 64,
     fontWeight: "bold",
   },
   subtitle: {
