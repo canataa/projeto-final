@@ -3,9 +3,19 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
+
+
+
 export default function Layout() {
     return (
-        <Tabs>
+        <Tabs
+        screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+                backgroundColor:"rgb(0, 0, 0)",
+            }
+        }}
+        >
             <Tabs.Screen name="index" 
             options={{title: "Início ", headerShown: false,
                 tabBarIcon: ({color}) => <FontAwesome name="home" size={24} color={color}/>
