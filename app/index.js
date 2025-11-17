@@ -1,7 +1,5 @@
 import React, { useState, useRef } from "react";
 import { StyleSheet, Text, View, TextInput, Image, Animated, Pressable } from "react-native";
-
-
 export default function Inicio() {
   const [texto, setTexto] = useState("");
 
@@ -25,11 +23,11 @@ export default function Inicio() {
         <Text style={styles.headerText}>Início</Text>
       </View>
 
-      
+      {/* Caixa de texto principal */}
       <View style={styles.content}>
         <View style={styles.caixa}>
           <Text style={styles.titulo}>O que é Hardware</Text>
-          <Text style={[styles.textocaixa]}>
+          <Text style={[styles.textocaixa]} >
             
            "Hardware é a parte física do computador, ou seja, tudo o que você pode tocar.
 Inclui componentes como o monitor, teclado, mouse, processador, memória e placa-mãe.
