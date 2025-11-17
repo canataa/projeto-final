@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { StyleSheet, Text, View, TextInput, Image, Animated, Pressable } from "react-native";
 
+
 export default function Inicio() {
   const [texto, setTexto] = useState("");
 
@@ -24,20 +25,18 @@ export default function Inicio() {
         <Text style={styles.headerText}>Início</Text>
       </View>
 
-      {/* Caixa de texto principal */}
+      
       <View style={styles.content}>
         <View style={styles.caixa}>
           <Text style={styles.titulo}>O que é Hardware</Text>
-          <TextInput
-            style={[styles.textocaixa]}
-            placeholder="Hardware é a parte física do computador, ou seja, tudo o que você pode tocar.
+          <Text style={[styles.textocaixa]}>
+            
+           "Hardware é a parte física do computador, ou seja, tudo o que você pode tocar.
 Inclui componentes como o monitor, teclado, mouse, processador, memória e placa-mãe.
 Essas peças trabalham juntas para que o computador funcione e execute os programas (que são o software).
 Em resumo, o hardware é o corpo do computador, enquanto o software é o cérebro que o faz agir."
-            placeholderTextColor="rgb(248, 246, 246)"
-            multiline
-            editable={false}
-          />
+            </Text>
+          
         </View>
       </View>
 
@@ -47,10 +46,10 @@ Em resumo, o hardware é o corpo do computador, enquanto o software é o cérebr
         onPressOut={() => animate(scale1, 1)}
       >
         <Animated.View style={[styles.hard, { transform: [{ scale: scale1 }] }]}>
-          <Image
-            source={{ uri: "https://cdn.awsli.com.br/2500x2500/1271/1271561/produto/208747449/placa-de-video-nvidia-asus-rog-strix-rtx-4080-oc-edition-1-wiuzyk.jpg" }}
-            style={styles.imagem}
-          />
+<Image source={require("../assets/placa_de_video.png")} 
+ style={styles.imagem}
+/>
+
           <Text style={styles.input}>Placa De Vídeo NVIDIA Asus Strix RTX 4080</Text>
         </Animated.View>
       </Pressable>
@@ -61,10 +60,9 @@ Em resumo, o hardware é o corpo do computador, enquanto o software é o cérebr
         onPressOut={() => animate(scale2, 1)}
       >
         <Animated.View style={[styles.hard2, { transform: [{ scale: scale2 }] }]}>
-          <Image
-            source={{ uri: "https://cdn-hardstore.s3-sa-east-1.amazonaws.com/20353/1280x960/1.webp" }}
-            style={styles.imagem}
-          />
+         <Image source={require("../assets/placa_mae.png")} 
+ style={styles.imagem}
+/>
           <Text style={styles.input2}>Placa Mãe Gigabyte B550M AORUS Elite</Text>
         </Animated.View>
       </Pressable>
