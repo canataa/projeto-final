@@ -1,96 +1,137 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, TextInput, Image, Animated, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Animated,
+  Pressable,
+  useWindowDimensions,
+  ScrollView,
+} from "react-native";
+
 export default function Inicio() {
-  const [texto, setTexto] = useState("");
+  const { width } = useWindowDimensions();
 
-  // Criar animações individuais para cada quadrado
-  const scale1 = useRef(new Animated.Value(1)).current;
-  const scale2 = useRef(new Animated.Value(1)).current;
-  const scale3 = useRef(new Animated.Value(1)).current;
-  const scale4 = useRef(new Animated.Value(1)).current;
+  const createFlipAnimation = () => ({
+    animatedValue: new Animated.Value(0),
+    isFlipped: false,
+  });
 
-  const animate = (anim, to) => {
-    Animated.spring(anim, {
-      toValue: to,
+  const cards = useRef([
+    createFlipAnimation(),
+    createFlipAnimation(),
+    createFlipAnimation(),
+    createFlipAnimation(),
+  ]).current;
+
+  const flipCard = (card) => {
+    const toValue = card.isFlipped ? 0 : 180;
+
+    Animated.timing(card.animatedValue, {
+      toValue,
+      duration: 400,
       useNativeDriver: true,
-      friction: 4,
     }).start();
+
+    card.isFlipped = !card.isFlipped;
   };
 
+  const frontImages = [
+    require("../assets/placa_de_video.png"),
+    require("../assets/placa_mae.png"),
+    require("../assets/processador.png"),
+    require("../assets/memoria.png"),
+  ];
+
+  const frontTitles = [
+    "Placa de Vídeo",
+    "Placa Mãe",
+    "Processador AMD",
+    "Memoria Ram",
+  ];
+
+  const backTexts = [
+    "A placa de vídeo processa imagens e gráficos, essencial para jogos e edição.",
+    "A placa-mãe conecta todos os componentes do computador e permite sua comunicação.",
+    "O processador é o cérebro do PC, executando cálculos e comandos.",
+    "Memória RAM é onde o computador guarda dados temporários para acessar tudo mais rápido.",
+  ];
+
+  const isLargeScreen = width > 700;
+  const caixaWidth = isLargeScreen ? 550 : "95%";
+  const caixaHeight = isLargeScreen ? 250 : 320;
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Início</Text>
       </View>
 
-      {/* Caixa de texto principal */}
-      <View style={styles.content}>
-        <View style={styles.caixa}>
-          <Text style={styles.titulo}>Bem vindo</Text>
-          <Text style={[styles.textocaixa]} >
-            Este aplicativo fala sobre Hardware e seus componentes, o que é hardware?</Text>
-            <Text style={[styles.textocaixa]} >
-            Hardware é a parte física do computador, ou seja, tudo aquilo que você pode tocar. São as peças 
-            como o monitor, o teclado, o mouse, o processador, a memória e a placa-mãe, igual esses exemplos abaixo.</Text>
-          
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={[styles.caixaContainer, { width: caixaWidth, height: caixaHeight }]}>
+          <View style={styles.caixa}>
+            <Text style={styles.titulo}>O que é Hardware</Text>
+            <Text style={styles.textocaixa}>
+              Hardware é a parte física do computador — tudo que você pode tocar. Inclui
+              monitor, teclado, mouse, processador, memória, placa-mãe e outros componentes.
+              O hardware é o corpo do computador, enquanto o software é o cérebro que o faz funcionar.
+            </Text>
+          </View>
         </View>
-      </View>
 
-      {/* Quadrado 1 */}
-      <Pressable
-        onPressIn={() => animate(scale1, 1.1)}
-        onPressOut={() => animate(scale1, 1)}
-      >
-        <Animated.View style={[styles.hard, { transform: [{ scale: scale1 }] }]}>
-<Image source={require("../assets/placa_de_video.png")} 
- style={styles.imagem}
-/>
+        <View style={styles.hardwareList}>
+          {cards.map((card, index) => {
+            const rotate = card.animatedValue.interpolate({
+              inputRange: [0, 180],
+              outputRange: ["0deg", "180deg"],
+            });
 
-          <Text style={styles.input}>Placa De Vídeo </Text>
-        </Animated.View>
-      </Pressable>
+            const rotateBack = card.animatedValue.interpolate({
+              inputRange: [0, 180],
+              outputRange: ["180deg", "360deg"],
+            });
 
-      {/* Quadrado 2 */}
-      <Pressable
-        onPressIn={() => animate(scale2, 1.1)}
-        onPressOut={() => animate(scale2, 1)}
-      >
-        <Animated.View style={[styles.hard2, { transform: [{ scale: scale2 }] }]}>
-         <Image source={require("../assets/placa_mae.png")} 
- style={styles.imagem}
-/>
-          <Text style={styles.input2}>Placa Mãe </Text>
-        </Animated.View>
-      </Pressable>
+            return (
+              <Pressable key={index} onPress={() => flipCard(card)} style={styles.hardwareWrapper}>
+                <View style={styles.cardContainer}>
+                  
+                  {/* FRENTE */}
+                  <Animated.View
+                    style={[
+                      styles.cardFace,
+                      { transform: [{ rotateY: rotate }] },
+                    ]}
+                  >
+                    <View style={styles.imageWrapper}>
+                      <Image
+                        source={frontImages[index]}
+                        style={styles.imagem}
+                        resizeMode="cover"
+                      />
+                    </View>
 
-      {/* Quadrado 3 */}
-      <Pressable
-        onPressIn={() => animate(scale3, 1.1)}
-        onPressOut={() => animate(scale3, 1)}
-      >
-        <Animated.View style={[styles.hard3, { transform: [{ scale: scale3 }] }]}>
-          <Image
-            source={{ uri: "https://cdn.awsli.com.br/2500x2500/2508/2508057/produto/205993563/1-lvjtrr.jpg" }}
-            style={styles.imagem}
-          />
-          <Text style={styles.input3}>Processador </Text>
-        </Animated.View>
-      </Pressable>
+                    <Text style={styles.input}>{frontTitles[index]}</Text>
+                  </Animated.View>
 
-      {/* Quadrado 4 */}
-      <Pressable
-        onPressIn={() => animate(scale4, 1.1)}
-        onPressOut={() => animate(scale4, 1)}
-      >
-        <Animated.View style={[styles.hard4, { transform: [{ scale: scale4 }] }]}>
-          <Image
-            source={{ uri: "https://img.olx.com.br/images/37/374598577163702.jpg" }}
-            style={styles.imagem}
-          />
-          <Text style={styles.input4}>Mouse</Text>
-        </Animated.View>
-      </Pressable>
-    </View>
+                  {/* VERSO */}
+                  <Animated.View
+                    style={[
+                      styles.cardFace,
+                      styles.cardBack,
+                      { transform: [{ rotateY: rotateBack }] },
+                    ]}
+                  >
+                    <Text style={styles.backText}>{backTexts[index]}</Text>
+                  </Animated.View>
+
+                </View>
+              </Pressable>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </ScrollView>
   );
 }
 
@@ -102,220 +143,134 @@ const styles = StyleSheet.create({
 
   header: {
     height: 90,
-    backgroundColor: "rgb(0, 0, 0)",
+    width: "100%",
+    backgroundColor: "black",
     justifyContent: "center",
     alignItems: "center",
-    elevation: 10,
     borderBottomWidth: 2,
     borderBottomColor: "rgba(0, 130, 252, 0.4)",
   },
 
   headerText: {
     color: "white",
-    fontSize: 40,
+    fontSize: 32,
     fontWeight: "bold",
-    letterSpacing: 2,
-    textShadowColor: "rgba(0, 130, 252, 0.7)",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 8,
   },
 
-  content: {
-    flex: 1,
-    justifyContent: "center",
+  scrollContent: {
     alignItems: "center",
+    paddingTop: 10,
+    paddingBottom: 80,
+  },
+
+  caixaContainer: {
+    backgroundColor: "rgb(23, 14, 92)",
+    borderRadius: 20,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "rgb(0, 130, 252)",
+    shadowOpacity: 0.8,
+    shadowOffset: { width: 8, height: 10 },
+    shadowRadius: 20,
+    elevation: 12,
+    marginBottom: 30,
+    marginTop: 10,
   },
 
   caixa: {
-    position: "absolute",
-    width: 550,
-    minHeight: 260,
+    width: "95%",
     backgroundColor: "rgb(23, 14, 92)",
-    borderRadius: 25,
+    borderRadius: 20,
     padding: 20,
-    alignItems: "center",
-    justifyContent: "center",
-
-    // NOVO ESTILO
     borderWidth: 2,
     borderColor: "rgba(0, 130, 252, 0.35)",
-    shadowColor: "rgb(0, 130, 252)",
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 5, height: 7 },
-    shadowRadius: 18,
-    elevation: 15,
-    marginTop: -550,
+    elevation: 10,
   },
 
   titulo: {
     fontSize: 26,
     fontWeight: "bold",
-    fontFamily: "monospace",
     color: "white",
-    marginBottom: 15,
-
-    // brilho leve
-    textShadowColor: "rgba(0, 130, 252, 0.6)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 6,
+    marginBottom: 10,
+    textAlign: "center",
   },
 
   textocaixa: {
     fontSize: 16,
-    fontFamily: "monospace",
     color: "white",
     textAlign: "center",
-    width: "90%",
+  },
+
+  hardwareList: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    width: "100%",
+    paddingHorizontal: 10,
+  },
+
+  hardwareWrapper: {
+    marginBottom: 20,
+    width: "45%",
+    maxWidth: 250,
+    perspective: 800,
+  },
+
+  cardContainer: {
+    width: "100%",
+    height: 250,
+  },
+
+  cardFace: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    backfaceVisibility: "hidden",
+    backgroundColor: "rgb(23, 14, 92)",
+    borderRadius: 20,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "white",
+    shadowOpacity: 0.7,
+    shadowOffset: { width: 3, height: 4 },
+    shadowRadius: 10,
+    elevation: 6,
+  },
+
+  cardBack: {
+    backgroundColor: "rgb(11, 5, 40)",
+    transform: [{ rotateY: "180deg" }],
+    padding: 15,
+  },
+
+  imageWrapper: {
+    width: "100%",
+    height: "45%",
+    borderRadius: 20,
+    overflow: "hidden",   // 🔵 ESSENCIAL
     marginBottom: 10,
-    lineHeight: 22,
-  },
-
-  hard: {
-    width: 240,
-    height: 270,
-    backgroundColor: "rgb(23, 14, 92)",
-    borderRadius: 22,
-    padding: 12,
-    left: 20,
-    alignItems: "center",
-   
-
-    // melhoria visual
-    borderWidth: 2,
-    borderColor: "rgba(0, 130, 252, 0.35)",
-    shadowColor: "rgb(0, 130, 252)",
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 5, height: 7 },
-    shadowRadius: 20,
-    elevation: 15,
-
-    marginTop: -580,
-    overflow: "hidden",
-  },
-
-  hard2: {
-    width: 240,
-    height: 270,
-    backgroundColor: "rgb(23, 14, 92)",
-    borderRadius: 22,
-    padding: 12,
-    left: 330,
-    alignItems: "center",
-
-    borderWidth: 2,
-    borderColor: "rgba(0, 130, 252, 0.35)",
-    shadowColor: "rgb(0, 130, 252)",
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 5, height: 7 },
-    shadowRadius: 20,
-    elevation: 15,
-
-    marginTop: -580,
-    overflow: "hidden",
-  },
-
-  hard3: {
-    width: 240,
-    height: 270,
-    backgroundColor: "rgb(23, 14, 92)",
-    borderRadius: 22,
-    padding: 12,
-    left: 20,
-    alignItems: "center",
-
-    borderWidth: 2,
-    borderColor: "rgba(0, 130, 252, 0.35)",
-    shadowColor: "rgb(0, 130, 252)",
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 5, height: 7 },
-    shadowRadius: 20,
-    elevation: 15,
-
-    marginTop: -290,
-    overflow: "hidden",
-  },
-
-  hard4: {
-    width: 240,
-    height: 270,
-    backgroundColor: "rgb(23, 14, 92)",
-    borderRadius: 22,
-    padding: 12,
-    left: 330,
-    alignItems: "center",
-
-    borderWidth: 2,
-    borderColor: "rgba(0, 130, 252, 0.35)",
-    shadowColor: "rgb(0, 130, 252)",
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 5, height: 7 },
-    shadowRadius: 20,
-    elevation: 15,
-
-    marginTop: -290,
-    overflow: "hidden",
   },
 
   imagem: {
-    width: 200,
-    height: 200,
-    borderRadius: 12,
-    marginBottom: 10,
-
-    // efeito de brilho
-    shadowColor: "rgba(0, 130, 252, 0.9)",
-    shadowOpacity: 0.8,
-    shadowRadius: 20,
+    width: "100%",
+    height: "100%",
   },
 
   input: {
     width: "90%",
-    height: 32,
-    backgroundColor: "rgba(0, 132, 255, 0.15)",
-    borderRadius: 10,
     textAlign: "center",
+    padding: 6,
+    backgroundColor: "rgba(247, 252, 246, 0.1)",
+    borderRadius: 8,
     color: "white",
-    fontFamily: "monospace",
-    fontSize: 14,
-    paddingTop: 6,
+    fontSize: 13,
   },
 
-  input2: {
-    width: "90%",
-    height: 32,
-    backgroundColor: "rgba(0, 132, 255, 0.15)",
-    borderRadius: 10,
-    textAlign: "center",
+  backText: {
     color: "white",
-    fontFamily: "monospace",
-    fontSize: 14,
-    paddingTop: 6,
-  },
-
-  input3: {
-    width: "90%",
-    height: 32,
-    backgroundColor: "rgba(0, 132, 255, 0.15)",
-    borderRadius: 10,
+    fontSize: 15,
     textAlign: "center",
-    color: "white",
-    fontFamily: "monospace",
-    fontSize: 14,
-    paddingTop: 6,
-  },
-
-  input4: {
-    width: "90%",
-    height: 32,
-    backgroundColor: "rgba(0, 132, 255, 0.15)",
-    borderRadius: 10,
-    textAlign: "center",
-    color: "white",
-    fontFamily: "monospace",
-    fontSize: 14,
-    paddingTop: 6,
   },
 });
-
-
-
