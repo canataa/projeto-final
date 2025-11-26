@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,30 +12,6 @@ import {
 
 export default function Inicio() {
   const { width } = useWindowDimensions();
-
-  const createFlipAnimation = () => ({
-    animatedValue: new Animated.Value(0),
-    isFlipped: false,
-  });
-
-  const cards = useRef([
-    createFlipAnimation(),
-    createFlipAnimation(),
-    createFlipAnimation(),
-    createFlipAnimation(),
-  ]).current;
-
-  const flipCard = (card) => {
-    const toValue = card.isFlipped ? 0 : 180;
-
-    Animated.timing(card.animatedValue, {
-      toValue,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
-
-    card.isFlipped = !card.isFlipped;
-  };
 
   const frontImages = [
     require("../assets/placa_de_video.png"),
@@ -58,6 +34,14 @@ export default function Inicio() {
     "Memória RAM é onde o computador guarda dados temporários para acessar tudo mais rápido.",
   ];
 
+  // Criar animação para cada card, sem repetição
+  const cards = useRef(
+    frontImages.map(() => ({
+      animatedValue: new Animated.Value(0),
+      isFlipped: false,
+    }))
+  ).current;
+
   const isLargeScreen = width > 700;
   const caixaWidth = isLargeScreen ? 550 : "95%";
   const caixaHeight = isLargeScreen ? 250 : 320;
@@ -69,71 +53,95 @@ export default function Inicio() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={[styles.caixaContainer, { width: caixaWidth, height: caixaHeight }]}>
+        <View
+          style={[
+            styles.caixaContainer,
+            { width: caixaWidth, height: caixaHeight },
+          ]}
+        >
           <View style={styles.caixa}>
             <Text style={styles.titulo}>O que é Hardware</Text>
             <Text style={styles.textocaixa}>
-              Hardware é a parte física do computador — tudo que você pode tocar. Inclui
-              monitor, teclado, mouse, processador, memória, placa-mãe e outros componentes.
-              O hardware é o corpo do computador, enquanto o software é o cérebro que o faz funcionar.
+              Hardware é a parte física do computador — tudo que você pode tocar.
+              Inclui monitor, teclado, mouse, processador, memória, placa-mãe e
+              outros componentes. O hardware é o corpo do computador, enquanto o
+              software é o cérebro que o faz funcionar.
             </Text>
           </View>
         </View>
 
         <View style={styles.hardwareList}>
-          {cards.map((card, index) => {
-            const rotate = card.animatedValue.interpolate({
-              inputRange: [0, 180],
-              outputRange: ["0deg", "180deg"],
-            });
-
-            const rotateBack = card.animatedValue.interpolate({
-              inputRange: [0, 180],
-              outputRange: ["180deg", "360deg"],
-            });
-
-            return (
-              <Pressable key={index} onPress={() => flipCard(card)} style={styles.hardwareWrapper}>
-                <View style={styles.cardContainer}>
-                  
-                  {/* FRENTE */}
-                  <Animated.View
-                    style={[
-                      styles.cardFace,
-                      { transform: [{ rotateY: rotate }] },
-                    ]}
-                  >
-                    <View style={styles.imageWrapper}>
-                      <Image
-                        source={frontImages[index]}
-                        style={styles.imagem}
-                        resizeMode="cover"
-                      />
-                    </View>
-
-                    <Text style={styles.input}>{frontTitles[index]}</Text>
-                  </Animated.View>
-
-                  {/* VERSO */}
-                  <Animated.View
-                    style={[
-                      styles.cardFace,
-                      styles.cardBack,
-                      { transform: [{ rotateY: rotateBack }] },
-                    ]}
-                  >
-                    <Text style={styles.backText}>{backTexts[index]}</Text>
-                  </Animated.View>
-
-                </View>
-              </Pressable>
-            );
-          })}
+          {cards.map((card, index) => (
+            <FlipCard
+              key={index}
+              card={card}
+              image={frontImages[index]}
+              title={frontTitles[index]}
+              backText={backTexts[index]}
+            />
+          ))}
         </View>
       </ScrollView>
     </ScrollView>
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                 CARD COMPONENT                             */
+/* -------------------------------------------------------------------------- */
+
+function FlipCard({ card, image, title, backText }) {
+  const flipCard = () => {
+    Animated.timing(card.animatedValue, {
+      toValue: card.isFlipped ? 0 : 180,
+      duration: 400,
+      useNativeDriver: true,
+    }).start();
+
+    card.isFlipped = !card.isFlipped;
+  };
+
+  const rotate = card.animatedValue.interpolate({
+    inputRange: [0, 180],
+    outputRange: ["0deg", "180deg"],
+  });
+
+  const rotateBack = card.animatedValue.interpolate({
+    inputRange: [0, 180],
+    outputRange: ["180deg", "360deg"],
+  });
+
+  return (
+    <Pressable onPress={flipCard} style={styles.hardwareWrapper}>
+      <View style={styles.cardContainer}>
+        {/* Frente */}
+        <Animated.View
+          style={[styles.cardFace, { transform: [{ rotateY: rotate }] }]}
+        >
+          <View style={styles.imageWrapper}>
+            <Image source={image} style={styles.imagem} resizeMode="cover" />
+          </View>
+          <Text style={styles.input}>{title}</Text>
+        </Animated.View>
+
+        {/* Verso */}
+        <Animated.View
+          style={[
+            styles.cardFace,
+            styles.cardBack,
+            { transform: [{ rotateY: rotateBack }] },
+          ]}
+        >
+          <Text style={styles.backText}>{backText}</Text>
+        </Animated.View>
+      </View>
+    </Pressable>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                 ESTILOS                                     */
+/* -------------------------------------------------------------------------- */
 
 const styles = StyleSheet.create({
   container: {
@@ -200,6 +208,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     textAlign: "center",
+    fontFamily: "Montserrat_400regular",
   },
 
   hardwareList: {
@@ -249,7 +258,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "45%",
     borderRadius: 20,
-    overflow: "hidden",   // 🔵 ESSENCIAL
+    overflow: "hidden",
     marginBottom: 10,
   },
 
@@ -273,4 +282,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
   },
-})
+});

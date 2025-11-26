@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 28,
     fontWeight: "bold",
+    fontFamily:"Montserrat_400Regular"
   },
 
   scroll: {

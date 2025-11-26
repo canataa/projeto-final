@@ -2,11 +2,32 @@ import {Tabs} from "expo-router";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { useFonts, Montserrat_400Regular} from '@expo-google-fonts/montserrat';
+import { Slot, SplashScreen } from 'expo-router';
+import { useEffect } from 'react';
 
-
-
+SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
+
+  const [fontsLoaded, fontError] = useFonts({
+    Montserrat_400Regular,
+
+  });
+
+  useEffect(() => {
+    if (fontsLoaded || fontError) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, fontError])
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+
+  }
+
+
+
     return (
         <Tabs
         screenOptions={{
