@@ -27,7 +27,7 @@ export default function SobreMim() {
 
         {/* CARTÃO PRINCIPAL */}
         <View style={styles.card}>
-          <Text style={styles.title}>👋 Olá!</Text>
+          <Text style={styles.title}> Olá!</Text>
 
           <Text style={styles.text}>
             Meu nome é <Text style={styles.highlight}>Vitor</Text> e atualmente estou no 2° ano do ensino médio,
@@ -47,7 +47,7 @@ export default function SobreMim() {
 
         {/* LINHA DO TEMPO */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>📘 Minha jornada</Text>
+          <Text style={styles.sectionTitle}> Minha jornada</Text>
 
           <View style={styles.timelineItem}>
             <Ionicons name="school" size={25} color="#1A73E8" />
@@ -73,7 +73,7 @@ export default function SobreMim() {
 
         {/* MOTIVAÇÃO */}
         <View style={styles.card}>
-          <Text style={styles.title}>🚀 Por que criei este app?</Text>
+          <Text style={styles.title}> Por que criei este app?</Text>
           <Text style={styles.text}>
             Sempre gostei de montar computadores e entender como tudo funciona.  
             Por isso, criei este aplicativo para tornar esse processo mais acessível e simples
@@ -83,7 +83,7 @@ export default function SobreMim() {
 
         {/* RODAPÉ */}
         <Text style={styles.footerText}>
-          Desenvolvido com ❤️ por Vitor
+        Obrigado por ver ate o final
         </Text>
 
       </ScrollView>

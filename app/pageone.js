@@ -6,14 +6,14 @@ export default function Evolucao() {
   return (
     <View style={styles.container}>
 
-      {/* HEADER */}
+     
       <View style={styles.header}>
         <Text style={styles.headerText}>Evolução do Hardware</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll}>
 
-        {/* --- NOVO CARD: LEI DE MURPHY --- */}
+      
         <View style={styles.card}>
           <Text style={styles.title}>❗A Lei de Murphy</Text>
           <Text style={styles.text}>
@@ -28,7 +28,7 @@ export default function Evolucao() {
           </Text>
         </View>
 
-        {/* --- ITEM 1: SSD x HDD (2 FOTOS) --- */}
+        
         <View style={styles.section}>
           <Ionicons name="hardware-chip" size={30} color="#1A73E8" />
           <Text style={styles.sectionTitle}>1. SSD substituiu o HDD</Text>
@@ -36,26 +36,27 @@ export default function Evolucao() {
             O HDD tinha partes mecânicas e era um dos maiores culpados por falhas.
             O SSD eliminou isso, trazendo mais velocidade e confiabilidade.
           </Text>
+          
 
           <View style={styles.imageRow}>
-            <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.doubleImage} />
-            <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.doubleImage} />
+            <Image source={require("../assets/ssd.png")} style={styles.doubleImage} />
+            <Image source={require("../assets/hd.png")} style={styles.doubleImage} />
           </View>
         </View>
 
-        {/* --- ITEM 2: FONTES (1 FOTO) --- */}
+        
         <View style={styles.section}>
           <Ionicons name="construct" size={30} color="#1A73E8" />
           <Text style={styles.sectionTitle}>2. Fontes com múltiplas proteções</Text>
           <Text style={styles.sectionText}>
             Hoje temos fontes com proteção contra sobrecorrente, curto-circuito,
-            sobrevoltagem e temperaturas altas — reduzindo falhas catastróficas.
+            sobrevoltagem e temperaturas altas, reduzindo falhas catastróficas.
           </Text>
 
-          <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.singleImage} />
+          <Image source={require("../assets/fonte.png")} style={styles.singleImage} />
         </View>
 
-        {/* --- ITEM 3: BIOS UEFI --- */}
+    
         <View style={styles.section}>
           <Ionicons name="bug-outline" size={30} color="#1A73E8" />
           <Text style={styles.sectionTitle}>3. BIOS UEFI e autodiagnóstico</Text>
@@ -65,7 +66,7 @@ export default function Evolucao() {
           </Text>
         </View>
 
-        {/* --- ITEM 4: PADRÕES (4 FOTOS) --- */}
+        
         <View style={styles.section}>
           <Ionicons name="flash" size={30} color="#1A73E8" />
           <Text style={styles.sectionTitle}>4. Componentes padronizados</Text>
@@ -75,14 +76,14 @@ export default function Evolucao() {
           </Text>
 
           <View style={styles.imageGrid}>
-            <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.gridImage} />
-            <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.gridImage} />
-            <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.gridImage} />
-            <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.gridImage} />
+            <Image source={require("../assets/memoria.png")} style={styles.gridImage} />
+            <Image source={require("../assets/ddr5.png")} style={styles.gridImage} />
+            <Image source={require("../assets/pci.png")} style={styles.gridImage} />
+            <Image source={require("../assets/sata.png")} style={styles.gridImage} />
           </View>
         </View>
 
-        {/* --- ITEM 5: PROTEÇÕES TÉRMICAS (2 FOTOS) --- */}
+        
         <View style={styles.section}>
           <Ionicons name="shield-checkmark" size={30} color="#1A73E8" />
           <Text style={styles.sectionTitle}>5. Proteções térmicas</Text>
@@ -92,12 +93,12 @@ export default function Evolucao() {
           </Text>
 
           <View style={styles.imageRow}>
-            <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.doubleImage} />
-            <Image source={{ uri: "COLOQUE_LINK_AQUI" }} style={styles.doubleImage} />
+            <Image source={require("../assets/processador2.png")} style={styles.doubleImage} />
+            <Image source={require("../assets/placa2.png")} style={styles.doubleImage} />
           </View>
         </View>
 
-        {/* --- ITEM 6: INTELIGÊNCIA E AUTOMAÇÃO --- */}
+        
         <View style={styles.section}>
           <Ionicons name="sparkles" size={30} color="#1A73E8" />
           <Text style={styles.sectionTitle}>6. Inteligência e automação</Text>
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
 
   singleImage: {
     width: "100%",
-    height: 160,
+    height: 300,
     borderRadius: 10,
     marginTop: 15,
     backgroundColor: "#ccc",
@@ -230,4 +231,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#ccc",
   },
+ 
 });
