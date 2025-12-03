@@ -14,6 +14,7 @@ import {
 } from "react-native";
 
  const gpuNivel = {
+  "Sem placa de vídeo": 1,
     "GT 710": 5,
     "GT 730": 8,
     "GT 1030": 15,
@@ -79,6 +80,7 @@ import {
            };
   const cpuNivel = {
     "intel celeron g5900": 5,
+    "intel celeron n3350": 7,
     "intel pentium g4560": 10,
     "intel i3 4130": 12,
     "intel i3 6100": 16,
@@ -136,6 +138,7 @@ import {
   };
   
  const jogosRequisitos = {
+  "vscode": 5,
   "stardew valley": 5,
   "hotline miami": 5,
   "terraria": 5,
