@@ -16,7 +16,7 @@ export default function SobreMim() {
         {/* FOTO + APRESENTAÇÃO */}
         <View style={styles.profileCard}>
           <Image 
-            source={{ uri: "" }} // Troque pela sua foto
+              source={require("../assets/fotoo.jpg")} 
             style={styles.profileImage}
           />
           <Text style={styles.profileName}>Vitor</Text>
